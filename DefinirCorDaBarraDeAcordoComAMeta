@@ -1,0 +1,70 @@
+'CARECE DE MELHORIAS, AMS CREIO QUE JA AJUDARÁ QUEM PRECISA :)
+
+
+'MACRO ABAIXO MUDA COR DO GRÁFICO DE BARRA EM FUNÇÃO DO INDICADOR TER ATINGIDO A META
+'POR EXEMPLO: SE A META DE VENDAS É DE 500, A BARRA FICA VERDE SE ESTIVER ACIMA DE 500 E VERMELHA SE ESTIVER ABAIXO
+'NESTE CÓDIGO, A 'COR ACIMA DA META' É MODIFICÁVEL VIA PARÂMETRO, JÁ A COR VERMELHA 'FORA DA META' É PADRÃO'
+
+'EXPLICANDO OS PARÂMETROS:
+' - NomeGrafico: Nome dado ao objeto Chart na planilha
+' - QtdeBarras: Informa quantas barras tem o gráfico de barras
+' - OrdemBarra: em caso de o gráfico de barras ter mais de uma váriável por categoria. Em caso negativo, informar '1' como parâmetro
+' - meta: a meta uqe definirá se o gráfico ficará "verde" ou vermelho
+' - ParamArray CorGrafico(): um vetor com o código RGB que o gráfico deve ser plotaco caso fique acima da meta
+
+Sub DefinirCorDaBarra(NomeGrafico As String, QtdeBarras As Integer, OrdemBarra As Integer, meta As Double, _
+    ParamArray CorGrafico() As Variant)
+    
+    Dim c As Chart
+    Dim porcentagem As Double
+    
+    ActiveSheet.ChartObjects(NomeGrafico).Activate
+    Set c = ActiveChart
+    
+    For i = 1 To QtdeBarras
+        
+        On Error GoTo tratativa
+        'ConvertPercentToDouble é uma função definida pelo usuário
+        porcentagem = ConvertPercentToDouble(c.SeriesCollection(OrdemBarra).Points(i).DataLabel.Text)
+        If porcentagem < meta Then
+            ActiveChart.FullSeriesCollection(OrdemBarra).Points(i).Select
+            With Selection.Format.Fill
+                .Visible = msoTrue
+                .ForeColor.RGB = RGB(255, 0, 0)
+                .Transparency = 0
+                .Solid
+            End With
+        Else
+            ActiveChart.FullSeriesCollection(OrdemBarra).Points(i).Select
+            With Selection.Format.Fill
+                .Visible = msoTrue
+                .ForeColor.RGB = RGB(CorGrafico(0), CorGrafico(1), CorGrafico(2))
+                .Transparency = 0
+                .Solid
+            End With
+        End If
+        
+tratativa:
+        Resume Next
+        
+    Next i    
+End Sub
+
+'FUNÇÃO ABAIXO CONVERTE, POR EXEMPLO, O VALOR STRING "54%" NO VALOR 'Double' 0,54
+Function ConvertPercentToDouble(strValor As String)
+    
+    If InStr(strValor, "%") Then
+        i = Len(strValor)
+        strValor = Left(strValor, i - 1)
+        valor = CDbl(strValor)
+        valor = valor / 100
+    End If
+    
+    ConvertPercentToDouble = valor
+
+End Function
+
+'EXEMPLO DE USO DA FUNÇÃO ACIMA
+'Sub MudarCorBarraConsumo()
+'    DefinirCorDaBarra "grafico_1", 5, 1, 0.8, 0, 176, 240
+'End Sub
