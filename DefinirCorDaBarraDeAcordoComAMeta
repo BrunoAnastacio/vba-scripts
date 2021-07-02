@@ -1,4 +1,4 @@
-'CARECE DE MELHORIAS, AMS CREIO QUE JA AJUDARÁ QUEM PRECISA :)
+'CARECE DE MELHORIAS, MAS CREIO QUE JA AJUDARÁ QUEM PRECISA :)
 
 
 'MACRO ABAIXO MUDA COR DO GRÁFICO DE BARRA EM FUNÇÃO DO INDICADOR TER ATINGIDO A META
@@ -10,7 +10,7 @@
 ' - QtdeBarras: Informa quantas barras tem o gráfico de barras
 ' - OrdemBarra: em caso de o gráfico de barras ter mais de uma váriável por categoria. Em caso negativo, informar '1' como parâmetro
 ' - meta: a meta uqe definirá se o gráfico ficará "verde" ou vermelho
-' - ParamArray CorGrafico(): um vetor com o código RGB que o gráfico deve ser plotaco caso fique acima da meta
+' - ParamArray CorGrafico(): um vetor com o código RGB que o gráfico deve ser plotado caso fique acima da meta
 
 Sub DefinirCorDaBarra(NomeGrafico As String, QtdeBarras As Integer, OrdemBarra As Integer, meta As Double, _
     ParamArray CorGrafico() As Variant)
