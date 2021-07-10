@@ -22,12 +22,10 @@ Sub DefinirCorDaBarra(NomeGrafico As String, QtdeBarras As Integer, OrdemBarra A
     Set c = ActiveChart
     
     For i = 1 To QtdeBarras
-        
         On Error GoTo tratativa
-        'ConvertPercentToDouble é uma função definida pelo usuário
-        porcentagem = ConvertPercentToDouble(c.SeriesCollection(OrdemBarra).Points(i).DataLabel.Text)
+        porcentagem = Convert.ConvertPercentToDouble(c.SeriesCollection(OrdemBarra).Points(i).DataLabel.Text)
         If porcentagem < meta Then
-            ActiveChart.FullSeriesCollection(OrdemBarra).Points(i).Select
+            c.SeriesCollection(OrdemBarra).Points(i).Select
             With Selection.Format.Fill
                 .Visible = msoTrue
                 .ForeColor.RGB = RGB(255, 0, 0)
@@ -35,7 +33,7 @@ Sub DefinirCorDaBarra(NomeGrafico As String, QtdeBarras As Integer, OrdemBarra A
                 .Solid
             End With
         Else
-            ActiveChart.FullSeriesCollection(OrdemBarra).Points(i).Select
+            c.SeriesCollection(OrdemBarra).Points(i).Select
             With Selection.Format.Fill
                 .Visible = msoTrue
                 .ForeColor.RGB = RGB(CorGrafico(0), CorGrafico(1), CorGrafico(2))
@@ -47,7 +45,8 @@ Sub DefinirCorDaBarra(NomeGrafico As String, QtdeBarras As Integer, OrdemBarra A
 tratativa:
         Resume Next
         
-    Next i    
+    Next i
+    
 End Sub
 
 'FUNÇÃO ABAIXO CONVERTE, POR EXEMPLO, O VALOR STRING "54%" NO VALOR 'Double' 0,54
